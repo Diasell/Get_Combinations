@@ -280,10 +280,9 @@ def get_reelcase_by_line(all_comb, reelset, wline, given_line):
 def main_loop(reelset, dict_case, given_line ):
     """
     :param reelset: list of lists where each inner list is a reel
-    :param symbol: what symbol you want to get in winline
-    :param wline: list of symbols in the winning line
+    :param dict_case: dict that looks like {"testcasename": testcase value}
     :param given_line: line that you want to see win combination on
-    :returns tuple -(testcase, best_move)
+    :prints out the tag with test case to console
     """
 
     name = dict_case.keys()[0]
@@ -308,7 +307,7 @@ def console_test_case(test_case, name):
                                                                     test_case[2],
                                                                     test_case[3],
                                                                     test_case[4],
-                                                                    test_case[4])
+                                                                    test_case[5])
     print str_case + '\n'
 
 
