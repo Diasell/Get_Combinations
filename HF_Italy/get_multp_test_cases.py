@@ -65,8 +65,8 @@ LINE6  = [1,0,0,0,1]
 LINE7  = [1,2,2,2,1]
 LINE8  = [0,0,1,2,2]
 LINE9  = [2,2,1,0,0]
-LINE10 = [1,0,1,2,1]
-LINE11 = [1,2,1,0,1]
+LINE10 = [1,2,1,0,1]
+LINE11 = [1,0,1,2,1]
 LINE12 = [0,1,1,1,0]
 LINE13 = [2,1,1,1,2]
 LINE14 = [0,1,0,1,0]
@@ -249,16 +249,15 @@ def get_test_case(reelcase, reelset):
 
 
 
-def ifwinline(line, reelcase):
+def ifwinline(line, wline, reelcase):
     """
     Checks if the line is a winning one
     """
     list_of_line_symbols = lineview(line, reelcase)
     first_symbol = firstinline(list_of_line_symbols)
     q_win_symbols = get_amount_of_win_symbols(list_of_line_symbols, first_symbol)
-    if first_symbol in x2_symbols and q_win_symbols==2:
-        return True
-    elif q_win_symbols>=3:
+    q_win_symbols_wline = get_amount_of_win_symbols(wline, first_symbol)
+    if q_win_symbols == q_win_symbols_wline:
         return True
     else:
         return False
@@ -300,8 +299,10 @@ def get_reelcase_by_line(all_comb, reelset, wline, given_line):
     """
     for combination in all_comb:
         reelcase = getReelCaseFromComb(reelset, combination)
-        if ifwinline(given_line,reelcase):
+        if ifwinline(given_line,wline,reelcase):
             return reelcase
+
+
 
 
 def main_loop(reelset, dict_case, given_line ):
@@ -346,4 +347,4 @@ given_line = LINES[input_line-1]
 all_comb = get_all_symbol_combination(range(10))
 
 for combination in all_comb:
-    main_loop(REEL_SET_FG, combination, given_line)
+    main_loop(REEL_SET0, combination, given_line)
