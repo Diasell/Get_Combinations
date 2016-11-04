@@ -4,40 +4,47 @@ import itertools
 from first import first
 
 
-REEL_SET0 = [[4,10,1,9,7,4,8,3,10,2,	7,5,8,3,10,4,6,3,7,5,	6,11,12,9,10,5,11,1,9,3,	11,2,6,5,8,12,11,4,10,11],
-             [6,1,9,3,7,4,8,5,10,7,	2,9,8,3,10,5,6,0,7,5,	6,11,12,8,9,5,11,7,9,3,		8,2,6,4,8,0,11,4,10,9],
-             [1,10,9,0,7,4,8,11,10,3,	7,9,8,4,10,11,6,0,7,5,	6,11,12,9,10,5,6,7,2,8,		11,3,6,9,8,0,11,4,8,9],
-             [6,1,10,9,7,4,8,11,10,3,	7,9,8,5,10,2,6,3,7,5,	6,11,12,9,6,5,11,7,0,8,		11,3,6,7,8,0,11,4,10,9],
-             [6,1,9,3,7,4,8,3,10,7,	2,9,8,3,10,2,6,4,7,5,	6,11,12,9,5,10,4,7,5,8,		11,3,6,5,8,1,11,4,9,2]]
+REEL_SET0 = [[8,8,8,3,6,0,4,1,5,3,	0,7,2,1,6,6,0,3,5,2,0,4,2,3,0,10,1,6,6,6,2,5,2,7,7,7,3,0,5,0,8,1,4,3,10,3,5,0],
+             [8,8,8,2,4,1,4,1,0,10,	1,4,0,1,7,7,7,1,5,0,4,3,0,5,3,6,6,6,3,2,4,2,3,5,1,10,2,4,1,7,7,7,1,3],
+             [8,8,8,2,4,1,2,4,1,5,	0,4,0,1,4,0,1,5,0,6,6,1,4,3,5,0,8,8,8,0,5,2,3,6,6,3,5,2,4,2,3,5,1,0,10,2,4,0,5,1,7,7,7,1,3],
+             [8,8,1,2,10,0,5,1,7,7,	0,4,3,0,6,6,2,4,0,5,0,6,6,6,2,5,0,4,1,10,0,4,2,5,3,8,8,8,0,1,4,3,0,7,7,7,3,10,2,1,5,3,4,3,2,5,0],
+             [8,8,1,2,10,1,5,1,7,7,	0,4,3,10,1,6,6,2,4,0,5,1,6,6,6,2,5,1,4,1,10,1,4,2,5,3,8,8,8,0,1,4,3,0,7,7,7,2,5,3,4,3,2,5,1]]
+
+REEL_SET1 = [[8,8,8,3,11,2,6,0,4,11,2,5,3,11,0,7,2,11,3,6,6,4,1,5,11,2,0,10,2,5,11,0,1,6,6,6,0,5,1,7,7,7,3,2,5,0,8,1,4,3,10,3,5,0],
+             [8,8,8,2,4,1,4,1,0,10,1,4,0,1,7,7,7,1,5,0,4,3,0,5,3,6,6,6,3,2,4,2,3,5,1,10,2,4,1,7,7,7,1,3],
+             [8,8,8,2,4,1,11,0,4,1,5,2,4,11,1,4,0,1,5,0,6,6,1,4,3,5,0,8,8,8,0,5,2,11,3,6,6,3,5,2,4,2,11,3,5,1,4,0,10,2,0,0,5,1,7,7,7,1,3],
+             [8,8,1,2,10,0,5,1,7,7,0,4,3,0,6,6,2,4,0,5,0,6,6,6,2,5,0,4,1,10,0,4,2,5,3,8,8,8,0,1,4,3,0,7,7,7,3,2,5,3,4,3,2,5,0],
+             [8,8,1,2,10,1,5,1,7,7,0,4,3,10,1,6,6,2,11,0,5,1,6,6,6,2,5,1,11,1,1,4,2,5,3,8,8,8,0,1,4,3,0,7,7,7,2,5,3,4,3,11,2,5,1]]
 
 REEL_SET_FreeGames =\
-            [[1,7,9,5,10,8,4,11,7,2,	9,6,3,10,8,5,6,8,4,11,		7,3,6,11,5,10,11,1,9,8,		3,11,4,7,10,12,8,2,10,9],
-             [1,6,10,4,7,9,5,11,2,7,	0,11,8,3,10,11,0,7,10,5,	6,10,5,8,12,7,3,9,4,8,		11,3,6,8,5,9,11,4,10,9],
-             [1,6,10,4,7,9,2,11,7,3,	9,8,0,10,3,6,7,2,10,5,		6,11,12,9,10,5,11,7,2,8,	11,3,6,4,8,0,11,4,10,9],
-             [1,9,7,4,10,2,8,11,4,7,	9,2,8,10,3,6,7,0,10,6,		5,11,8,1,9,5,11,9,12,8,		11,3,6,5,9,0,11,4,10,8],
-             [1,6,10,4,9,7,2,11,8,1,	9,10,5,11,8,3,10,6,5,10,	11,4,6,9,5,10,11,12,7,8,	3,11,6,2,8,7,11,5,10,9]]
+            [[2,3,8,8,8,0,2,5,0,2,3,0,5,2,10,3,5,0,3,5,2,3,5,10,0],
+             [4,0,8,8,8,3,1,8,8,8],
+             [5,4,8,8,8,2,1,8,8,8],
+             [1,4,8,8,8,5,0,8,3,2,8,8],
+             [4,2,8,8,8,0,5,8,8,3,1,8]]
+ALL_REEL_SETS = [REEL_SET0, REEL_SET1, REEL_SET_FreeGames]
 
 
 
 BET = 1
 
 # Symbols:
-WILD        = 0
-Commodus    = 1
-Lucilla     = 2
-Gracchus    = 3
-Proximo     = 4
-Juba        = 5
-A           = 6
-K           = 7
-Q           = 8
-J           = 9
-TEN         = 10
-NINE        = 11
-SCATTER     = 12
+bar1        = 0
+bar2        = 1
+bar3        = 2
+horse_shoe  = 3
+dollar      = 4
+gold        = 5
+blue7       = 6
+green7      = 7
+red7        = 8
+flame_gem   = 9
+WILD        = 10
+SCATTER     = 11
 
-list_of_symbols = range(13)
-x2_symbols = [0,1,2,12]
+
+list_of_symbols = range(12)
+x2_symbols = []
 
 # Winning Lines:
 LINE1  = [1,1,1,1,1]
@@ -49,64 +56,29 @@ LINE6  = [1,0,0,0,1]
 LINE7  = [1,2,2,2,1]
 LINE8  = [0,0,1,2,2]
 LINE9  = [2,2,1,0,0]
-LINE10 = [1,0,1,2,1]
-LINE11 = [1,2,1,0,1]
-LINE12 = [0,1,1,1,0]
-LINE13 = [2,1,1,1,2]
-LINE14 = [0,1,0,1,0]
-LINE15 = [2,1,2,1,2]
-LINE16 = [1,1,0,1,1]
-LINE17 = [1,1,2,1,1]
-LINE18 = [0,0,2,0,0]
-LINE19 = [2,2,0,2,2]
-LINE20 = [0,2,2,2,0]
+LINE10 = [1,1,2,1,1]
 
-#LINES = [LINE1,LINE2,LINE3,LINE4,LINE5,LINE6,LINE7,LINE8,LINE9,LINE10,LINE11,
-         #LINE12,LINE13,LINE14,LINE15,LINE16,LINE17,LINE18,LINE19,LINE20]
-
-LINES = [LINE1,LINE2,LINE3,LINE4,LINE5,LINE6,LINE7,LINE8,LINE9]
-
-
+LINES = [LINE1,LINE2,LINE3,LINE4,LINE5,LINE6,LINE7,LINE8,LINE9,LINE10]
 
 
 paytable = {
-    WILD        : (0, 0, 0, 0, 0),
-    Commodus    : (0, 8, 75, 500, 5000),
-    Lucilla     : (0, 7, 50, 250, 1000),
-    Gracchus    : (0, 0, 25, 75, 350),
-    Proximo     : (0, 0, 20, 60, 250),
-    Juba        : (0, 0, 20, 60, 250),
-    A           : (0, 0, 15, 50, 200),
-    K           : (0, 0, 15, 50, 200),
-    Q           : (0, 0, 10, 40, 120),
-    J           : (0, 0, 10, 40, 120),
-    TEN         : (0, 0,  8, 20,  75),
-    NINE        : (0, 0,  8, 20,  75),
-    SCATTER     : (0, 1, 4, 20, 100),
-    "257"         : (0, 8, 75, 500, 5000),
-    "258"        : (0, 7, 50, 250, 1000),
-    "259"         : (0, 0, 25, 75, 350),
-    "260"         : (0, 0, 20, 60, 250),
-    "261"         : (0, 0, 20, 60, 250),
+    bar1         : (0,	0,	0.5,	1,		2.5),
+    bar2         : (0,	0,	0.5,	1.5,	5),
+    bar3         : (0,	0,	0.5,	2,		7.5),
+    horse_shoe   : (0,	0,	1,		3,		10),
+    dollar       : (0,	0,	1,		3,		10),
+    gold         : (0,	0,	1,		3,		10),
+    blue7        : (0,	0,	2,		6,		20),
+    green7       : (0,	0,	3,		8,		30),
+    red7         : (0,	0,	4,		10,		40),
+    flame_gem    : (0,	0,	5,		50,		500),
+    WILD         : (0,	0,	5,		50,		500),
 }
 
-
-distr_MP = {
-    2: 40,
-    3: 70,
-    4: 80,
-    5: 100,
-    7: 100,
-    10: 50
+distr_reels = {
+ 0 : 0,
+ 1 : 495,
 }
-
-distr_FS = {
- 5 : 70,
- 7 : 120,
- 10: 120,
- 20: 80
-}
-
 
 
 def get_symbol_indecies(reel, symbol):
@@ -118,6 +90,33 @@ def get_symbol_indecies(reel, symbol):
     result = []
     for index in range(len(reel)):
         if reel[index] == symbol:
+            result.append(index)
+    return result
+
+
+
+def get_symbol_indecies1(reel, symbol):
+    """
+    :param reel:  list of symbols given in math
+    :param symbol: interger that points to needed
+    :return: list of indecies on the reel for given symbol
+    """
+    result = []
+    for index in range(len(reel)-2):
+        if reel[index] == symbol and reel[index+1] == symbol and reel[index+2]!=symbol:
+            result.append(index)
+    return result
+
+
+def get_symbol_indecies2(reel, symbol):
+    """
+    :param reel:  list of symbols given in math
+    :param symbol: interger that points to needed
+    :return: list of indecies on the reel for given symbol
+    """
+    result = []
+    for index in range(len(reel)-2):
+        if reel[index] == symbol and reel[index+1] == symbol and reel[index+2]==symbol:
             result.append(index)
     return result
 
@@ -203,8 +202,11 @@ def get_comb_index(comb, reel):
             return i
 
 
-def get_test_case(reelcase, reelset):
-    testcase = []
+def get_test_case(reelcase, reelset, fs=False):
+    if not fs:
+        testcase = [0,]
+    else:
+        testcase = [495,]
     # testcase.append(get_reelset_index(reelset))
     for i in range(len(reelset)):
         testcase.append(get_comb_index(reelcase[i], reelset[i]))
@@ -323,6 +325,7 @@ def get_best_reelcase(all_comb, reelset,wline):
     return best_move
 
 
+
 def compare_Best_moves(reelset, move1, move2):
     """
     :param reelset: list of lists where each inner list is a reel
@@ -357,94 +360,52 @@ def append_non_win_reel(win_move,reelset):
     """
     :param win_move: list of lists where each inner list contains a reel symbols
     :param reelset: list of lists where each inner list is a reel
-    :return: adds more reels to the reelcase without increasing amount of wining lines
+    :return: adds 1 more reel to the reelcase without increasing amount of wining lines
     """
-    while len(win_move)<len(reelset):
-        next_reel_index = len(win_move)
-        for i in range(len(reelset[next_reel_index])):
-            possible_reelview = reelset[next_reel_index][i:i+3]
-            equal = False
-            for symbol in win_move[next_reel_index-1]:
-                for pos_symbol in possible_reelview:
-                    if symbol == pos_symbol or pos_symbol == WILD:
-                        equal = True
-            if equal == False:
-                win_move.append(possible_reelview)
-                break
+    next_reel_index = len(win_move)
+    for i in range(len(reelset[next_reel_index])):
+        possible_reelview = reelset[next_reel_index][i:i+3]
+        equal = False
+        for symbol in win_move[next_reel_index-1]:
+            for pos_symbol in possible_reelview:
+                if symbol == pos_symbol or pos_symbol == WILD:
+                    equal = True
+        if equal == False:
+            win_move.append(possible_reelview)
+            break
     return win_move
 
 
-def getFSamountWager(FS):
-    """
-    :param FS: amount of FS that you want to get
-    :return: wager that need to be pasted to testcase in order to get needed amount of FS
-    """
-
-    if   FS == 5:
-        return distr_FS[5]-1
-    elif FS ==7:
-        return distr_FS[5]
-    elif FS == 10:
-        return  distr_FS[7] + distr_FS[5]
-    elif FS ==20:
-        return distr_FS[10] + distr_FS[7] + distr_FS[5]
-
-
-def getMultiplierWager(MP):
-    """
-    :param MP: size of MP that you want to get
-    :return: wager that need to be pasted to testcase in order to get needed size of MP
-    """
-
-    if   MP == 2:
-        return distr_MP[2]-1
-    elif MP == 3:
-        return distr_MP[2]
-    elif MP == 4:
-        return distr_MP[2] + distr_MP[3]
-    elif MP == 5:
-        return  distr_MP[4] + distr_MP[2] + distr_MP[3]
-    elif MP == 7:
-        return distr_MP[5]+ distr_MP[4] + distr_MP[2] + distr_MP[3]
-    elif MP == 10:
-        return distr_MP[7] + distr_MP[5] + distr_MP[4] + distr_MP[2] + distr_MP[3]
-
-
-def get_bonus_test_case(reelset,FS,MP):
+def get_fs_test_case(reelset):
     """
     :param reelset: list of lists where each inner list is a reel
-    :param FS: amount of free spins (choose from existing variants)
-    :param MP: size of multiplier (choose from existing variants)
-    :param win_no_win: True by default but  you can change it to False so you will win nothing during the bonus
     :return: test case
     """
-    switch_witches = (1,2,3)
+    # switch_witches = (1,2,3)
     test_case = []
-    first_reel_view = []
-    last_reel_view  = []
+    reelview = []
 
     # create reelcase which will give you the bonus
     for i in range(len(reelset[0])):
-        if reelset[0][i] == BONUS:
-            x = reelset[0][i:i+3]
-            first_reel_view.append(x)
+        if reelset[0][i] == SCATTER:
+            first_reel_view = reelset[0][i:i+3]
+            reelview.append(first_reel_view)
             break
-    reelview =  append_non_win_reel(first_reel_view,reelset)
-    x = []
-    for j in range(len(reelset[4])):
-        if reelset[4][j] == BONUS:
-            x = reelset[4][j:j+3]
+    reelview =  append_non_win_reel(reelview,reelset)
+    for j in range(len(reelset[2])):
+        if reelset[2][j] == SCATTER:
+            third_reel_view = reelset[2][j:j+3]
+            reelview.append(third_reel_view)
             break
-    reelview.append(x)
-    reelview.pop(4)
+    reelview = append_non_win_reel(reelview, reelset)
+    for z in range(len(reelset[4])):
+        if reelset[4][z] == SCATTER:
+            last_reel_view = reelset[4][z:z + 3]
+            reelview.append(last_reel_view)
+            break
     # add part for FS
-    test_case = get_test_case(reelview,reelset)
-    for i in switch_witches:
-        test_case.append(i)
-    test_case.append(getFSamountWager(FS))
-
-    # add part for MP
-    test_case.append(getMultiplierWager(MP))
+    test_case = get_test_case(reelview,reelset, fs=True)
+    test_case.append(5) # no boost win
 
     return test_case
 
@@ -469,6 +430,38 @@ def script_loop(reelset, symbol, times_repeat, nextsymbol=None):
     product_comb = itertools.product(*comb_list)
     sorted_product = sorted_comb(product_comb,reelset[0:len(wline)],wline)
     best_move      = get_best_reelcase(sorted_product,reelset[0:len(wline)], wline)
+    if len(best_move) < len(reelset):
+        best_move      = append_non_win_reel(best_move,reelset)
+    test_case      = get_test_case(best_move, reelset)
+    return  test_case, best_move
+
+
+def script_loop_big_symbol(reelset, symbol, times_repeat, nextsymbol=None,big7=2):
+    """
+    :param reelset: list of lists where each inner list is a reel
+    :param symbol: what symbol you want to get in winline
+    :param times_repeat: how many winning symbols in combination
+    :param nextsymbol: what symbol should be next after your combination
+    :returns tuple -(testcase, best_move)
+    """
+    wline = []
+    for i in range(times_repeat):
+        wline.append(symbol)
+    if nextsymbol != None:
+        wline.append(nextsymbol)
+    comb_list = []
+    for i in range(len(wline)):
+        if big7=='2':
+            reel_comb = get_symbol_indecies2(reelset[i],wline[i])
+            comb_list.append(reel_comb)
+        elif big7=='1':
+            reel_comb = get_symbol_indecies1(reelset[i], wline[i])
+            comb_list.append(reel_comb)
+    product_comb = itertools.product(*comb_list)
+    for comb in product_comb:
+        f_move = comb
+        break
+    best_move = getReelCaseFromComb(reelset, f_move)
     if len(best_move) < len(reelset):
         best_move      = append_non_win_reel(best_move,reelset)
     test_case      = get_test_case(best_move, reelset)
@@ -501,15 +494,29 @@ def console_payout(bet, best_move):
 
 
 test_case_name = raw_input("Enter the name for the testcase: ")
-bonus          = raw_input("Do you need bonus test case? Yes/No: ")
+FS             = raw_input("Do you need FS test case? Yes/No: ")
+big7           = raw_input("Do you need big 7 b3 test case? 0/1/2: ")
 
-if bonus == "Yes" or bonus == "yes" or bonus == "YES":
-    FS = input("Enter free spins amount that you what to get(5/7/10/20): ")
-    MP = input("Enter size of multiplier that you what to get(2/3/4/5/7/10): ")
+if FS == "y" or FS=="Yes" or FS=='yes':
     start_time = time.time()
-    test_case = get_bonus_test_case(REEL_SET0,FS,MP)
+    test_case = get_fs_test_case(REEL_SET1)
     console_test_case(test_case_name, test_case)
 
+elif big7>0:
+    symbol_in_combination = input("Enter the symbol number: ")
+    times_repeat = input("how many symbols in the winning line: ")
+    if times_repeat < 5:
+        next_symbol = input("Enter the next symbol in the line(type 99 if it doesn't matter): ")
+        if next_symbol == 99:
+            next_symbol = random.randrange(1, 9)
+    else:
+        next_symbol = None
+    start_time = time.time()
+    script_loop = script_loop_big_symbol(REEL_SET_FreeGames, symbol_in_combination, times_repeat, next_symbol, big7)
+    test_case = script_loop[0]
+    best_move = script_loop[1]
+    console_test_case(test_case_name, test_case)
+    console_payout(BET, best_move)
 else:
     symbol_in_combination = input("Enter the symbol number: ")
     times_repeat          = input("how many symbols in the winning line: ")
