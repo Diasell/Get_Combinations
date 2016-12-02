@@ -24,8 +24,6 @@ REEL_SET_FreeGames =\
              [4,2,8,8,8,0,5,8,8,3,1,8]]
 ALL_REEL_SETS = [REEL_SET0, REEL_SET1, REEL_SET_FreeGames]
 
-
-
 BET = 1
 
 # Symbols:
@@ -42,7 +40,6 @@ flame_gem   = 9
 WILD        = 10
 SCATTER     = 11
 
-
 list_of_symbols = range(12)
 x2_symbols = []
 
@@ -58,7 +55,7 @@ LINE8  = [0,0,1,2,2]
 LINE9  = [2,2,1,0,0]
 LINE10 = [1,1,2,1,1]
 
-LINES = [LINE1,LINE2,LINE3,LINE4,LINE5,LINE6,LINE7,LINE8,LINE9,LINE10]
+LINES = [LINE1, LINE2, LINE3, LINE4, LINE5, LINE6, LINE7, LINE8, LINE9, LINE10]
 
 
 paytable = {
@@ -76,8 +73,8 @@ paytable = {
 }
 
 distr_reels = {
- 0 : 0,
- 1 : 495,
+ 0: 0,
+ 1: 495,
 }
 
 
@@ -94,7 +91,6 @@ def get_symbol_indecies(reel, symbol):
     return result
 
 
-
 def get_symbol_indecies1(reel, symbol):
     """
     :param reel:  list of symbols given in math
@@ -103,7 +99,7 @@ def get_symbol_indecies1(reel, symbol):
     """
     result = []
     for index in range(len(reel)-2):
-        if reel[index] == symbol and reel[index+1] == symbol and reel[index+2]!=symbol:
+        if reel[index] == symbol and reel[index+1] == symbol and reel[index+2] != symbol:
             result.append(index)
     return result
 
@@ -116,7 +112,7 @@ def get_symbol_indecies2(reel, symbol):
     """
     result = []
     for index in range(len(reel)-2):
-        if reel[index] == symbol and reel[index+1] == symbol and reel[index+2]==symbol:
+        if reel[index] == symbol and reel[index+1] == symbol and reel[index+2] == symbol:
             result.append(index)
     return result
 
@@ -148,20 +144,18 @@ def check_if_wline(reelset, new_comb, wline):
     return True
 
 
-def sorted_comb(all_comb, reelset, wline):
+def sorted_comb(all_comb):
     """
     :param all_comb: list of tuples. Where tuple is a 5 indecies each for each reel
-    :param reelset: list of lists where each list is a reel
-    :param wline: list of symbols
     :return: List of all combinations where needed winning line is present
     """
 
     for comb in all_comb:
         for line in LINES:
-             yield  get_line_combination(comb,line)
+            yield get_line_combination(comb, line)
 
 
-def getReelCaseFromComb(reelset, combination):
+def get_reelcase_from_comb(reelset, combination):
     """
     :param reelset: list of lists where each list is a reel
     :param combination: list of indecies on each reel
@@ -170,8 +164,8 @@ def getReelCaseFromComb(reelset, combination):
     reelcase = []
     for i in range(len(reelset)):
         reel = reelset[i]
-        full_reel =reel + reel[0:5]
-        if combination[i]>=0:
+        full_reel = reel + reel[0:5]
+        if combination[i] >= 0:
             reelview = full_reel[combination[i]:combination[i]+3]
         else:
             y = combination[i] + len(reel)
@@ -204,23 +198,23 @@ def get_comb_index(comb, reel):
 
 def get_test_case(reelcase, reelset, fs=False):
     if not fs:
-        testcase = [0,]
+        testcase = [0, ]
     else:
-        testcase = [495,]
+        testcase = [495, ]
     # testcase.append(get_reelset_index(reelset))
     for i in range(len(reelset)):
         testcase.append(get_comb_index(reelcase[i], reelset[i]))
     return testcase
 
 
-def checkHowManyLinesWon(reelcase):
+def check_how_many_lines_won(reelcase):
     """
     Checks how many line won on the given reelcase
     """
     amount_of_lines = 0
     for line in LINES:
-        if ifwinline(line,reelcase):
-            amount_of_lines +=1
+        if ifwinline(line, reelcase):
+            amount_of_lines += 1
     return amount_of_lines
 
 
@@ -231,9 +225,9 @@ def ifwinline(line, reelcase):
     list_of_line_symbols = lineview(line, reelcase)
     first_symbol = firstinline(list_of_line_symbols)
     q_win_symbols = get_amount_of_win_symbols(list_of_line_symbols, first_symbol)
-    if first_symbol in x2_symbols and q_win_symbols==2:
+    if first_symbol in x2_symbols and q_win_symbols == 2:
         return True
-    elif q_win_symbols>=3:
+    elif q_win_symbols >= 3:
         return True
     else:
         return False
@@ -264,10 +258,10 @@ def get_amount_of_win_symbols(lst, first_symbol):
     :param first_symbol: first symbol of the line combination
     :return: the quantity of winning symbols in the line
     """
-    return len(list(itertools.takewhile(lambda symbol: symbol == first_symbol or symbol==WILD, lst)))
+    return len(list(itertools.takewhile(lambda symbol: symbol == first_symbol or symbol == WILD, lst)))
 
 
-def linepayout(bet,line,reelcase):
+def linepayout(bet, line, reelcase):
     """
     Returns how much should be paid for this winning line
     """
@@ -287,7 +281,7 @@ def scatterpayout(bet, reelcase):
     for i in range(5):
         for j in range(3):
             if reelcase[i][j] == SCATTER:
-                scatters_count+=1
+                scatters_count += 1
     if scatters_count == 0:
         return 0
     else:
@@ -306,42 +300,40 @@ def calculate_payout(bet, reelcase):
     return scatterpayout(bet, reelcase) + payout_for_lines
 
 
-def get_best_reelcase(all_comb, reelset,wline):
+def get_best_reelcase(all_comb, reelset):
     """
-    :param all_comb: List of all combinations where needed winning line is present. result of sorted_comb()
-    :param wline: list of winnnig symbols
+    :param all_comb: List of all combinations where needed winning line is present. result of sorted_comb
+    :param reelset: parameter
     :return: reelcase with min amount of wining lines
     """
     best_move = []
     winlines = len(LINES)
     for combination in all_comb:
-        reelcase = getReelCaseFromComb(reelset, combination)
-        lines_won = checkHowManyLinesWon(reelcase)
+        reelcase = get_reelcase_from_comb(reelset, combination)
+        lines_won = check_how_many_lines_won(reelcase)
         if lines_won == 1:
             return reelcase
-        if lines_won<=winlines:
+        if lines_won <= winlines:
             best_move = reelcase
             winlines = lines_won
     return best_move
 
 
-
-def compare_Best_moves(reelset, move1, move2):
+def compare_best_moves(move1, move2):
     """
-    :param reelset: list of lists where each inner list is a reel
-    :param comb1:
-    :param comb2:
+    :param move1:
+    :param move2:
     :return: returns combination with smallest amount of wining lines
     """
-    lines_won1 = checkHowManyLinesWon(move1)
-    lines_won2 = checkHowManyLinesWon(move2)
-    if lines_won1>lines_won2:
+    lines_won1 = check_how_many_lines_won(move1)
+    lines_won2 = check_how_many_lines_won(move2)
+    if lines_won1 > lines_won2:
         return move2
     else:
         return move1
 
 
-def avarageSymbol_value(reelset, symbol):
+def avarage_symbol_value(reelset, symbol):
     """
     :param reelset: list of lists where each inner list is a reel
     :param symbol: integer that represents a symbol on the reel
@@ -356,7 +348,7 @@ def avarageSymbol_value(reelset, symbol):
     return all_symbol/z
 
 
-def append_non_win_reel(win_move,reelset):
+def append_non_win_reel(win_move, reelset):
     """
     :param win_move: list of lists where each inner list contains a reel symbols
     :param reelset: list of lists where each inner list is a reel
@@ -370,7 +362,7 @@ def append_non_win_reel(win_move,reelset):
             for pos_symbol in possible_reelview:
                 if symbol == pos_symbol or pos_symbol == WILD:
                     equal = True
-        if equal == False:
+        if not equal:
             win_move.append(possible_reelview)
             break
     return win_move
@@ -381,8 +373,6 @@ def get_fs_test_case(reelset):
     :param reelset: list of lists where each inner list is a reel
     :return: test case
     """
-    # switch_witches = (1,2,3)
-    test_case = []
     reelview = []
 
     # create reelcase which will give you the bonus
@@ -391,7 +381,7 @@ def get_fs_test_case(reelset):
             first_reel_view = reelset[0][i:i+3]
             reelview.append(first_reel_view)
             break
-    reelview =  append_non_win_reel(reelview,reelset)
+    reelview = append_non_win_reel(reelview, reelset)
     for j in range(len(reelset[2])):
         if reelset[2][j] == SCATTER:
             third_reel_view = reelset[2][j:j+3]
@@ -404,8 +394,8 @@ def get_fs_test_case(reelset):
             reelview.append(last_reel_view)
             break
     # add part for FS
-    test_case = get_test_case(reelview,reelset, fs=True)
-    test_case.append(5) # no boost win
+    test_case = get_test_case(reelview, reelset, fs=True)
+    test_case.append(5)  # no boost win
 
     return test_case
 
@@ -421,22 +411,22 @@ def script_loop(reelset, symbol, times_repeat, nextsymbol=None):
     wline = []
     for i in range(times_repeat):
         wline.append(symbol)
-    if nextsymbol != None:
+    if nextsymbol is not None:
         wline.append(nextsymbol)
     comb_list = []
     for i in range(len(wline)):
-        reel_comb = get_symbol_indecies(reelset[i],wline[i])
+        reel_comb = get_symbol_indecies(reelset[i], wline[i])
         comb_list.append(reel_comb)
     product_comb = itertools.product(*comb_list)
-    sorted_product = sorted_comb(product_comb,reelset[0:len(wline)],wline)
-    best_move      = get_best_reelcase(sorted_product,reelset[0:len(wline)], wline)
+    sorted_product = sorted_comb(product_comb)
+    best_move = get_best_reelcase(sorted_product, reelset[0:len(wline)])
     if len(best_move) < len(reelset):
-        best_move      = append_non_win_reel(best_move,reelset)
-    test_case      = get_test_case(best_move, reelset)
-    return  test_case, best_move
+        best_move = append_non_win_reel(best_move, reelset)
+    test_case = get_test_case(best_move, reelset)
+    return test_case, best_move
 
 
-def script_loop_big_symbol(reelset, symbol, times_repeat, nextsymbol=None,big7=2):
+def script_loop_big_symbol(reelset, symbol, times_repeat, nextsymbol=None, big7=2):
     """
     :param reelset: list of lists where each inner list is a reel
     :param symbol: what symbol you want to get in winline
@@ -447,62 +437,59 @@ def script_loop_big_symbol(reelset, symbol, times_repeat, nextsymbol=None,big7=2
     wline = []
     for i in range(times_repeat):
         wline.append(symbol)
-    if nextsymbol != None:
+    if nextsymbol is not None:
         wline.append(nextsymbol)
     comb_list = []
     for i in range(len(wline)):
-        if big7=='2':
-            reel_comb = get_symbol_indecies2(reelset[i],wline[i])
+        if big7 == '2':
+            reel_comb = get_symbol_indecies2(reelset[i], wline[i])
             comb_list.append(reel_comb)
-        elif big7=='1':
+        elif big7 == '1':
             reel_comb = get_symbol_indecies1(reelset[i], wline[i])
             comb_list.append(reel_comb)
     product_comb = itertools.product(*comb_list)
     for comb in product_comb:
         f_move = comb
         break
-    best_move = getReelCaseFromComb(reelset, f_move)
+    best_move = get_reelcase_from_comb(reelset, f_move)
     if len(best_move) < len(reelset):
-        best_move      = append_non_win_reel(best_move,reelset)
-    test_case      = get_test_case(best_move, reelset)
-    return  test_case, best_move
+        best_move = append_non_win_reel(best_move, reelset)
+    test_case = get_test_case(best_move, reelset)
+    return test_case, best_move
 
 
-def console_test_case(test_case_name, test_case):
+def console_test_case(name, final_test_case):
     """
-    :param test_case_name: name for the test case
-    :param test_case: list of reel indecies
+    :param name: name for the test case
+    :param final_test_case: list of reel indecies
     :return:  prints the modified test case to console
     """
-    part1 = '"%s"' % test_case_name
-    part2 = ": {\n        data: %s;\n    };" % test_case
+    part1 = '"%s"' % name
+    part2 = ": {\n        data: %s;\n    };" % final_test_case
     print part1+part2
     print "-"*30
 
 
-def console_payout(bet, best_move):
+def console_payout(bet, best_reelcase):
     """
     :param bet: bet amount
-    :param best_move: list of lists where each inner list is consist of reel symbols
+    :param best_reelcase: list of lists where each inner list is consist of reel symbols
     :return: prints payout to the console
     """
-    payout = calculate_payout(bet,best_move)
+    payout = calculate_payout(bet, best_reelcase)
     print "Payout: %s" % payout
     print "-"*30
 
-
-
-
 test_case_name = raw_input("Enter the name for the testcase: ")
-FS             = raw_input("Do you need FS test case? Yes/No: ")
-big7           = raw_input("Do you need big 7 b3 test case? 0/1/2: ")
+FS = raw_input("Do you need FS test case? Yes/No: ")
+big7 = raw_input("Do you need big 7 b3 test case? 0/1/2: ")
 
-if FS == "y" or FS=="Yes" or FS=='yes':
+if FS == "y" or FS == "Yes" or FS == 'yes':
     start_time = time.time()
     test_case = get_fs_test_case(REEL_SET1)
     console_test_case(test_case_name, test_case)
 
-elif big7>0:
+elif big7 > 0:
     symbol_in_combination = input("Enter the symbol number: ")
     times_repeat = input("how many symbols in the winning line: ")
     if times_repeat < 5:
@@ -512,23 +499,23 @@ elif big7>0:
     else:
         next_symbol = None
     start_time = time.time()
-    script_loop = script_loop_big_symbol(REEL_SET_FreeGames, symbol_in_combination, times_repeat, next_symbol, big7)
+    script_loop = script_loop_big_symbol(REEL_SET0, symbol_in_combination, times_repeat, next_symbol, big7)
     test_case = script_loop[0]
     best_move = script_loop[1]
     console_test_case(test_case_name, test_case)
     console_payout(BET, best_move)
 else:
     symbol_in_combination = input("Enter the symbol number: ")
-    times_repeat          = input("how many symbols in the winning line: ")
+    times_repeat = input("how many symbols in the winning line: ")
     if times_repeat < 5:
         next_symbol = input("Enter the next symbol in the line(type 99 if it doesn't matter): ")
         if next_symbol == 99:
-            next_symbol = random.randrange(1,9)
+            next_symbol = random.randrange(1, 9)
     else:
         next_symbol = None
     start_time = time.time()
-    test_case = script_loop(REEL_SET0, symbol_in_combination,times_repeat,next_symbol)[0]
-    best_move = script_loop(REEL_SET0, symbol_in_combination,times_repeat,next_symbol)[1]
+    test_case = script_loop(REEL_SET0, symbol_in_combination, times_repeat, next_symbol)[0]
+    best_move = script_loop(REEL_SET0, symbol_in_combination, times_repeat, next_symbol)[1]
     console_test_case(test_case_name, test_case)
-    console_payout(BET,best_move)
+    console_payout(BET, best_move)
 print("--- %s seconds ---" % (time.time() - start_time))
